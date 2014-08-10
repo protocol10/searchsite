@@ -1,0 +1,38 @@
+{% extends "base.html"%}
+
+{%block extra_js%}	
+<script type="text/javascript">
+	$(function() {
+		$('#post_form').submit(function(ev) {
+			ev.preventDefault();
+			var post_form = $(this);
+			$.ajax({
+				type: "POST",
+				url: post_form.attr('action'),
+				data: post_form.serialize()
+			})
+			.done(function( msg ) {
+				console.log( msg )
+				$("#results").html(msg)
+			});
+		});
+	});		
+</script>
+
+{%endblock%}
+{%block content%}
+<div class="form-signin">
+	<form name="post_form" id="post_form" action="{% url 'result' %}" method="POST">
+		{% csrf_token %}
+		<h3 class="form-signin-heading">Search</h3>
+			<input id="q" name="q" type="text" placeholder="search player name here..">
+		<br>
+			<input type="submit" value="OK" id="submit">
+
+		<div class="margin">
+			<div id="results"></div>
+		</div>
+	</form>
+</div>
+{%endblock%}
+
